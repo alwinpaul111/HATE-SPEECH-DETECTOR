@@ -89,8 +89,7 @@ if analyze and user_input.strip():
         if lang == "hi":
             translated      = translate_hi_to_en(user_input, hi_tok, hi_mod)
             text_to_predict = translated
-
-       cleaned = clean_text(text_to_predict)
+cleaned = clean_text(text_to_predict)
 
         # ── Quick fix for obvious positive phrases ──────────
         POSITIVE_PHRASES = [
