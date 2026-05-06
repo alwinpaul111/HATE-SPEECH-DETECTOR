@@ -113,7 +113,7 @@ if is_obvious_positive:
             label      = "No Hate"
             score      = 0.97
             hate_score = 0.03
-        else:
+else:
             result     = clf(cleaned[:512])[0]
             label      = result["label"]
             score      = result["score"]
