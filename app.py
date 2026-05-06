@@ -105,7 +105,7 @@ POSITIVE_PHRASES = [
             "appreciate you", "thank you", "grateful"
         ]
 
-        is_obvious_positive = any(
+is_obvious_positive = any(
             phrase in cleaned.lower() for phrase in POSITIVE_PHRASES
         )
 
