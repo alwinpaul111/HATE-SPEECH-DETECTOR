@@ -109,7 +109,7 @@ is_obvious_positive = any(
             phrase in cleaned.lower() for phrase in POSITIVE_PHRASES
         )
 
-        if is_obvious_positive:
+if is_obvious_positive:
             label      = "No Hate"
             score      = 0.97
             hate_score = 0.03
