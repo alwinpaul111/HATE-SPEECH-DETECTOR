@@ -92,7 +92,7 @@ if analyze and user_input.strip():
 cleaned = clean_text(text_to_predict)
 
         # ── Quick fix for obvious positive phrases ──────────
-        POSITIVE_PHRASES = [
+POSITIVE_PHRASES = [
             "lovely person", "wonderful person", "great person",
             "amazing person", "beautiful day", "love you",
             "you are great", "you are kind", "well done",
