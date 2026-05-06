@@ -20,23 +20,24 @@ st.title("🔍 Context-Aware Hate Speech Detector")
 st.markdown("**Powered by DistilBERT + SHAP Explainability + Multilingual (EN + HI)**")
 st.markdown("---")
 
-MODEL_PATH = "/content/drive/MyDrive/hate_speech_bert_model"
+MODEL_PATH = "alwinn/hate-speech-distilbert"
 
 @st.cache_resource
+
 def load_model():
-    config_path = os.path.join(MODEL_PATH, "config.json")
-    with open(config_path, "r") as f:
-        cfg = json.load(f)
-    cfg["id2label"] = {"0": "No Hate", "1": "Hate Speech"}
-    cfg["label2id"] = {"No Hate": 0, "Hate Speech": 1}
-    with open(config_path, "w") as f:
-        json.dump(cfg, f)
-    config    = AutoConfig.from_pretrained(MODEL_PATH)
-    model     = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH, config=config)
+    config          = AutoConfig.from_pretrained(MODEL_PATH)
+    config.id2label = {0: "No Hate", 1: "Hate Speech"}
+    config.label2id = {"No Hate": 0, "Hate Speech": 1}
+    model           = AutoModelForSequenceClassification.from_pretrained(
+                          MODEL_PATH, config=config)
     model.config.id2label = {0: "No Hate", 1: "Hate Speech"}
-    model.config.label2id = {"No Hate": 0, "Hate Speech": 1}
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-    clf       = pipeline("text-classification", model=model, tokenizer=tokenizer, device=-1)
+    tokenizer       = AutoTokenizer.from_pretrained(MODEL_PATH)
+    clf             = pipeline(
+                          "text-classification",
+                          model=model,
+                          tokenizer=tokenizer,
+                          device=-1
+                      )
     return clf, tokenizer
 
 @st.cache_resource
