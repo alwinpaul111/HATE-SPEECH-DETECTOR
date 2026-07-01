@@ -9,7 +9,7 @@
 
 ---
 
-## 🌐 Live Demo
+##  Live Demo
 
 ** [Try the app here](https://hate-speech-detector-ewoeuogd9zxgehywempuje.streamlit.app/)**
 
