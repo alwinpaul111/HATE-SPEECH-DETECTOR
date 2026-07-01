@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Model files (hosted on HuggingFace Hub instead)
+hate_speech_bert_model/
+checkpoints/
+*.safetensors
+*.bin
+
+# Data files
+*.csv
+*.json
+!requirements*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+logs/
+*.log
+
+# Streamlit
+.streamlit/secrets.toml
