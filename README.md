@@ -22,7 +22,7 @@
 | Input | Prediction | SHAP Explanation |
 |---|---|---|
 | "All immigrants should go back" |  Hate Speech (99.9%) | Words highlighted in red |
-| "I love how diverse our community is" | ✅ No Hate (99.3%) | Words highlighted in blue |
+| "I love how diverse our community is" |  No Hate (99.3%) | Words highlighted in blue |
 | "तुम बहुत घटिया इंसान हो" | 🚨 Hate Speech (99.5%) | Auto-translated + classified |
 
 ---
