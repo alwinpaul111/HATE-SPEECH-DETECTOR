@@ -1,4 +1,4 @@
-# 🔍 Context-Aware Hate Speech Detection using Transformer Models
+#  Context-Aware Hate Speech Detection using Transformer Models
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://hate-speech-detector-ewoeuogd9zxgehywempuje.streamlit.app/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -9,11 +9,11 @@
 
 ---
 
-## 🌐 Live Demo
+##  Live Demo
 
-**👉 [Try the app here](https://hate-speech-detector-ewoeuogd9zxgehywempuje.streamlit.app/)**
+** [Try the app here](https://hate-speech-detector-ewoeuogd9zxgehywempuje.streamlit.app/)**
 
-**🤗 Model on HuggingFace: [alwinn/hate-speech-distilbert](https://huggingface.co/alwinn/hate-speech-distilbert)**
+** Model on HuggingFace: [alwinn/hate-speech-distilbert](https://huggingface.co/alwinn/hate-speech-distilbert)**
 
 ---
 
