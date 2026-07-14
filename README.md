@@ -17,7 +17,7 @@
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 | Input | Prediction | Confidence |
 |---|---|---|
