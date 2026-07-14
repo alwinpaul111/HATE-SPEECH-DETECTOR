@@ -21,7 +21,7 @@
 
 | Input | Prediction | Confidence |
 |---|---|---|
-| "All immigrants should go back" | 🚨 Hate Speech | 99.9% |
+| "All immigrants should go back" |  Hate Speech | 99.9% |
 | "I love how diverse our community is" | ✅ No Hate | 99.3% |
 | "Oh sure, they're GREAT... if you like crime" | ⚠️ Indirect Hate (Sarcasm) | 85% sarcasm confidence |
 | "तुम बहुत घटिया इंसान हो" | 🚨 Hate Speech | 99.5% (auto-translated) |
