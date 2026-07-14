@@ -32,13 +32,13 @@
 
 | Feature | Description |
 |---|---|
-| 🧠 **DistilBERT Fine-tuning** | Transformer model fine-tuned on a balanced 2K hate speech dataset |
-| 🎭 **Sarcasm Detection** | Two-layer rule-based engine: keyword matching + regex patterns for indirect hate |
-| 🔥 **SHAP Explainability** | Bar chart showing top words pushing toward/away from hate speech |
-| 📊 **Confidence Pie Chart** | Visual breakdown of hate vs safe probability |
-| 📋 **Prediction Summary Table** | Structured view of prediction, confidence, language, translation, context |
-| 🌍 **Multilingual** | English + Hindi support via Helsinki-NLP translation pipeline |
-| 🚀 **Deployed Web App** | Live Streamlit app with real-time predictions |
+|  **DistilBERT Fine-tuning** | Transformer model fine-tuned on a balanced 2K hate speech dataset |
+|  **Sarcasm Detection** | Two-layer rule-based engine: keyword matching + regex patterns for indirect hate |
+|  **SHAP Explainability** | Bar chart showing top words pushing toward/away from hate speech |
+|  **Confidence Pie Chart** | Visual breakdown of hate vs safe probability |
+|  **Prediction Summary Table** | Structured view of prediction, confidence, language, translation, context |
+|  **Multilingual** | English + Hindi support via Helsinki-NLP translation pipeline |
+|  **Deployed Web App** | Live Streamlit app with real-time predictions |
 
 ---
 
