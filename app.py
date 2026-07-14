@@ -296,7 +296,7 @@ def render_confidence_pie(hate_prob: float, safe_prob: float):
     plt.close(fig)
 
 # ── UI ────────────────────────────────────────────────────────────────────────
-st.title("🔍 Context-Aware Hate Speech Detector")
+st.title("Context-Aware Hate Speech Detector")
 st.markdown("**Powered by DistilBERT + SHAP Explainability + Sarcasm Detection + Multilingual (EN + HI)**")
 st.markdown("---")
 
