@@ -28,7 +28,7 @@
 
 ---
 
-## ✨ Features
+##  Features
 
 | Feature | Description |
 |---|---|
