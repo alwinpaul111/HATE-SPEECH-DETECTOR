@@ -307,7 +307,7 @@ with st.spinner("Loading models... (first load ~30 sec)"):
 col1, col2 = st.columns([2, 1])
 with col1:
     user_input = st.text_area(
-        "✍️ Enter text (English or Hindi):",
+        " Enter text (English or Hindi):",
         height=150, placeholder="Type any text here..."
     )
 with col2:
@@ -316,7 +316,7 @@ with col2:
     show_pie   = st.checkbox("Show Confidence Pie Chart", value=True)
     show_trans = st.checkbox("Show Translation (Hindi)", value=True)
 
-analyze = st.button("🔍 Analyze", type="primary", use_container_width=True)
+analyze = st.button(" Analyze", type="primary", use_container_width=True)
 
 # ── Analysis ──────────────────────────────────────────────────────────────────
 if analyze and user_input.strip():
@@ -368,7 +368,7 @@ if analyze and user_input.strip():
     # ── Table + Pie ───────────────────────────────────────────────────────────
     left, right = st.columns([3, 1])
     with left:
-        st.markdown("#### 📋 Prediction Summary")
+        st.markdown("####  Prediction Summary")
 
         badge = (
             '<span class="badge-hate">Hate Speech</span>'
@@ -407,7 +407,7 @@ if analyze and user_input.strip():
 
     # ── Context Awareness Section ─────────────────────────────────────────────
     st.markdown("---")
-    st.markdown("#### 🎭 Context Awareness")
+    st.markdown("####  Context Awareness")
 
     if final_context == "indirect_hate":
         st.warning(
