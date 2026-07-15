@@ -113,7 +113,7 @@ Catches structural patterns:
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 HATE-SPEECH-DETECTOR/
