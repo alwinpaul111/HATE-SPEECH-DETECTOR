@@ -174,7 +174,7 @@ Perfectly balanced — no class imbalance issues.
 
 ---
 
-## 📊 Results
+##  Results
 
 | Metric | Score |
 |---|---|
