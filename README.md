@@ -77,7 +77,7 @@ Streamlit Web App Output
 
 ---
 
-## 🎭 Sarcasm Detection — How It Works
+##  Sarcasm Detection — How It Works
 
 Most hate speech detectors miss **indirect hate** — hostility disguised as neutral or positive language. This system uses a **two-layer rule-based engine** that is more reliable than ML-only approaches for common sarcasm patterns:
 
