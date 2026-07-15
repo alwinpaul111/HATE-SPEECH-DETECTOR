@@ -42,7 +42,7 @@
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 Input Text (EN/HI)
