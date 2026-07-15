@@ -151,7 +151,7 @@ Open `http://localhost:8501` in your browser.
 
 ---
 
-## 🧠 Model Details
+## Model Details
 
 | Parameter | Value |
 |---|---|
