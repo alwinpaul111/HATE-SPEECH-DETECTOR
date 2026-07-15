@@ -96,7 +96,7 @@ Catches structural patterns:
 
 ---
 
-## 🧾 Tech Stack
+##  Tech Stack
 
 | Category | Tools |
 |---|---|
