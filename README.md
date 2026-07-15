@@ -129,7 +129,7 @@ HATE-SPEECH-DETECTOR/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the repository
 ```bash
