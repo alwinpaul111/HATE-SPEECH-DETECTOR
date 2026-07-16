@@ -199,7 +199,7 @@ Example for *"All immigrants should go back to their country"*:
 
 ---
 
-## 🌍 Multilingual Support
+##  Multilingual Support
 
 Hindi input is automatically translated then classified:
 
