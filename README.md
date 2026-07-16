@@ -258,7 +258,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ---
 
-## 🙏 Acknowledgements
+##  Acknowledgements
 
 - [HuggingFace Transformers](https://huggingface.co/transformers/) for the DistilBERT model and Trainer API
 - [SHAP](https://shap.readthedocs.io/) for the explainability framework
