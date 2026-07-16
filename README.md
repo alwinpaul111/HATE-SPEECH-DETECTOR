@@ -234,7 +234,7 @@ The notebook covers:
 
 ---
 
-## ⚠️ Known Limitations
+##  Known Limitations
 
 - **Sarcasm rule-engine** covers common patterns but cannot detect all forms of implicit hate — novel sarcasm structures may be missed
 - **Hindi translation quality** depends on Helsinki-NLP — very short or highly colloquial Hindi may not translate accurately
