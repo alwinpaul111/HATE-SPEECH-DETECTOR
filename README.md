@@ -216,7 +216,7 @@ Result     : 🚨 Hate Speech (99.5% confidence)
 
 ---
 
-## ⚙️ How to Train Your Own Model
+##  How to Train Your Own Model
 
 Open the notebook in Google Colab:
 
