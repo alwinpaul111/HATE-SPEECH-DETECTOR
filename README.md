@@ -243,7 +243,7 @@ The notebook covers:
 
 ---
 
-## 🔗 Links
+##  Links
 
 - 🌐 **Live App**: [streamlit.app](https://hate-speech-detector-ewoeuogd9zxgehywempuje.streamlit.app/)
 - 🤗 **Model**: [HuggingFace Hub](https://huggingface.co/alwinn/hate-speech-distilbert)
