@@ -185,7 +185,7 @@ Perfectly balanced — no class imbalance issues.
 
 ---
 
-## 🔍 SHAP Explainability
+##  SHAP Explainability
 
 SHAP (SHapley Additive exPlanations) shows **which words** drove the prediction and by how much:
 
