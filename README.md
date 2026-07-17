@@ -245,7 +245,7 @@ The notebook covers:
 
 ##  Links
 
-- 🌐 **Live App**: [streamlit.app](https://hate-speech-detector-ewoeuogd9zxgehywempuje.streamlit.app/)
+-  **Live App**: [streamlit.app](https://hate-speech-detector-ewoeuogd9zxgehywempuje.streamlit.app/)
 - 🤗 **Model**: [HuggingFace Hub](https://huggingface.co/alwinn/hate-speech-distilbert)
 - 👤 **Author**: [Alwin Paul](https://linkedin.com/in/alwin-paul-18a825249)
 - 📧 **Email**: alwinpaul694@gmail.com
