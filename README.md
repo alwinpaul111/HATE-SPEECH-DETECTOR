@@ -5,7 +5,7 @@
 [![HuggingFace](https://img.shields.io/badge/🤗-HuggingFace-yellow)](https://huggingface.co/alwinn/hate-speech-distilbert)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> A production-ready hate speech detection system built with DistilBERT, featuring rule-based sarcasm detection for indirect hate, SHAP explainability with confidence visualization, multilingual support (English + Hindi), and a deployed Streamlit web application.
+> A production ready hate speech detection system built with DistilBERT, featuring rule-based sarcasm detection for indirect hate, SHAP explainability with confidence visualization, multilingual support (English + Hindi), and a deployed Streamlit web application.
 
 ---
 
