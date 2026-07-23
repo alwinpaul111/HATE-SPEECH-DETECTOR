@@ -7,7 +7,7 @@
 
 > A production ready hate speech detection system built with DistilBERT, featuring rule-based sarcasm detection for indirect hate, SHAP explainability with confidence visualization, multilingual support (English + Hindi), and a deployed Streamlit web application.
 
----
+ ---
 
 ##  Live Demo
 
@@ -15,7 +15,7 @@
 
 ** Model on HuggingFace: [alwinn/hate-speech-distilbert](https://huggingface.co/alwinn/hate-speech-distilbert)**
 
----
+ ---
 
 ## Screenshots
 
