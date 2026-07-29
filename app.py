@@ -22,54 +22,47 @@ st.set_page_config(
 st.markdown("""
 <style>
     .summary-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1rem 0;
-        font-size: 0.95rem;
-        border-radius: 8px;
-        overflow: hidden;
+        width: 100%; border-collapse: collapse;
+        margin: 1rem 0; font-size: 0.95rem;
+        border-radius: 8px; overflow: hidden;
     }
     .summary-table th {
-        background-color: #1e2030;
-        color: #a0aec0;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        padding: 10px 16px;
-        text-align: left;
+        background-color: #1e2030; color: #a0aec0;
+        font-weight: 600; text-transform: uppercase;
+        font-size: 0.75rem; letter-spacing: 0.08em;
+        padding: 10px 16px; text-align: left;
         border-bottom: 1px solid #2d3748;
     }
     .summary-table td {
         padding: 10px 16px;
-        border-bottom: 1px solid #2d3748;
-        color: #e2e8f0;
+        border-bottom: 1px solid #2d3748; color: #e2e8f0;
     }
     .summary-table tr:last-child td { border-bottom: none; }
     .summary-table tr:hover td { background-color: #1a1f35; }
     .badge-hate {
         background: #e53e3e22; color: #fc8181;
-        border: 1px solid #e53e3e55;
-        padding: 2px 10px; border-radius: 999px;
-        font-weight: 600; font-size: 0.85rem;
+        border: 1px solid #e53e3e55; padding: 2px 10px;
+        border-radius: 999px; font-weight: 600; font-size: 0.85rem;
     }
     .badge-safe {
         background: #38a16922; color: #68d391;
-        border: 1px solid #38a16955;
-        padding: 2px 10px; border-radius: 999px;
-        font-weight: 600; font-size: 0.85rem;
+        border: 1px solid #38a16955; padding: 2px 10px;
+        border-radius: 999px; font-weight: 600; font-size: 0.85rem;
     }
-    .badge-sarcasm {
+    .badge-sarcasm-hate {
+        background: #e53e3e22; color: #fc8181;
+        border: 1px solid #e53e3e55; padding: 2px 10px;
+        border-radius: 999px; font-weight: 600; font-size: 0.85rem;
+    }
+    .badge-sarcasm-general {
         background: #d69e2e22; color: #f6e05e;
-        border: 1px solid #d69e2e55;
-        padding: 2px 10px; border-radius: 999px;
-        font-weight: 600; font-size: 0.85rem;
+        border: 1px solid #d69e2e55; padding: 2px 10px;
+        border-radius: 999px; font-weight: 600; font-size: 0.85rem;
     }
     .badge-direct {
         background: #38a16922; color: #68d391;
-        border: 1px solid #38a16955;
-        padding: 2px 10px; border-radius: 999px;
-        font-weight: 600; font-size: 0.85rem;
+        border: 1px solid #38a16955; padding: 2px 10px;
+        border-radius: 999px; font-weight: 600; font-size: 0.85rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -91,72 +84,108 @@ POSITIVE_PHRASES = [
     "they are good", "they are nice", "is a great", "is a wonderful"
 ]
 
-# ── Rule-based Sarcasm Detection ──────────────────────────────────────────────
-# These patterns reliably catch common sarcastic hate speech structures
-SARCASM_PATTERNS = [
-    # Exaggerated caps used sarcastically
-    r'\b[A-Z]{2,}\b.*\b(if you like|right\?|sure|yeah|wow|totally)',
-    # Classic sarcasm starters
-    r'^(oh sure|yeah right|wow what|oh wow|oh absolutely|great idea|totally|yeah because|oh of course)',
-    # Sarcastic question endings
-    r'(right\?|isn\'t it\?|don\'t they\?|do they\?|what could go wrong)',
-    # Ellipsis + negative followup (classic sarcasm structure)
-    r'\.\.\.\s*(if you like|not|unless|except)',
-    # THOSE/THEM used with positive framing (dog whistle + sarcasm)
-    r'\b(those|them|these)\s+people\b.*(always|never|so|such|really)',
-    # Scare quotes pattern
-    r'["\'].*["\'].*(right|sure|yeah|totally|always)',
-    # "Another one of THEM"
-    r'another one of\s+(them|those|these)',
-    # "What a surprise" sarcasm
-    r'what a (surprise|shock|shocker)',
-    # Letting + negative outcome (sarcasm about policy)
-    r'(keep letting|just let|why do we let|letting them).*(in|come|stay)',
-]
-
-SARCASM_KEYWORDS = [
+# ── Sarcasm Patterns ──────────────────────────────────────────────────────────
+# TYPE 1: HATEFUL SARCASM — positive framing hiding group hostility
+HATEFUL_SARCASM_KEYWORDS = [
     "oh sure", "yeah right", "wow what a surprise",
     "oh of course", "totally trustworthy", "so trustworthy",
     "oh absolutely", "what could go wrong", "another one of them",
     "those people are always", "them causing", "if you like crime",
-    "love all the noise", "great addition", "such a surprise",
-    "oh wow", "yeah because those", "keep letting them",
+    "love all the noise", "great addition", "yeah because those",
+    "keep letting them",
+]
+HATEFUL_SARCASM_PATTERNS = [
+    r'\b[A-Z]{2,}\b.*\b(if you like|right\?|sure|yeah|wow|totally)',
+    r'^(oh sure|yeah right|wow what|oh wow|oh absolutely|great idea|totally|yeah because|oh of course)',
+    r'(right\?|isn\'t it\?|don\'t they\?|do they\?|what could go wrong)',
+    r'\.\.\.\s*(if you like|not|unless|except)',
+    r'\b(those|them|these)\s+people\b.*(always|never|so|such|really)',
+    r'another one of\s+(them|those|these)',
+    r'what a (surprise|shock|shocker)',
+    r'(keep letting|just let|why do we let|letting them).*(in|come|stay)',
 ]
 
-def rule_based_sarcasm(text: str) -> tuple[bool, float, str]:
+# TYPE 2: GENERAL SARCASM — mocking individual incompetence (non-hateful)
+GENERAL_SARCASM_KEYWORDS = [
+    "wow you're a genius", "truly revolutionary",
+    "congratulations you've", "congratulations, you've",
+    "what a brilliant idea", "if your goal was failure",
+    "new level of incompetence", "consistently wrong",
+    "zero effort maximum", "zero effort, maximum",
+    "talent for missing", "completely misplaced",
+    "you really thought", "was a smart move",
+    "making everyone's day harder", "you deserve an award",
+    "you managed to make", "simplest task difficult",
+    "confidence is inspiring", "misplaced confidence",
+    "you're a genius", "truly impressive",
+]
+GENERAL_SARCASM_PATTERNS = [
+    r'what a (brilliant|great|wonderful|fantastic|amazing|genius).*(if|but|though|however|was)',
+    r'(truly|really|absolutely|definitely)\s+(revolutionary|impressive|amazing|brilliant|genius)',
+    r'congratulations.*(incompetence|failure|wrong|bad|terrible|awful)',
+    r'you deserve.*(award|prize|medal).*(wrong|bad|incompetence|failure|missing)',
+    r'^wow[,\s].*(you|your).*(genius|brilliant|smart|impressive|amazing)',
+    r'zero\s+\w+[,\s]+maximum\s+\w+',
+    r'your\s+(confidence|talent|ability|skill).*(misplaced|unmatched|inspiring)',
+    r'you\s+managed\s+to\s+make.*(difficult|hard|worse|fail)',
+    r'you\s+really\s+thought\s+that\s+was',
+    r'award for being',
+]
+
+
+def rule_based_sarcasm(text: str) -> tuple[bool, str, float, str]:
     """
-    Returns (is_sarcastic, confidence, matched_reason)
-    Checks linguistic patterns that reliably indicate sarcasm.
+    Returns (is_sarcastic, sarcasm_type, confidence, reason)
+    sarcasm_type: "hateful" | "general" | "none"
     """
     lower = text.lower()
 
-    # Check keyword phrases first (highest confidence)
-    for kw in SARCASM_KEYWORDS:
+    # Check hateful sarcasm first
+    for kw in HATEFUL_SARCASM_KEYWORDS:
         if kw in lower:
-            return True, 0.92, f'Matched sarcastic phrase: "{kw}"'
-
-    # Check regex patterns
-    for pattern in SARCASM_PATTERNS:
+            return True, "hateful", 0.92, f'Matched hateful sarcasm phrase: "{kw}"'
+    for pattern in HATEFUL_SARCASM_PATTERNS:
         if re.search(pattern, lower):
-            return True, 0.85, f"Matched sarcasm pattern"
+            return True, "hateful", 0.85, "Matched hateful sarcasm pattern"
 
-    # Check for ALL-CAPS words (shouting/irony signal)
-    caps_words = re.findall(r'\b[A-Z]{3,}\b', text)
-    caps_words = [w for w in caps_words if w not in ['URL', 'USER']]
-    if len(caps_words) >= 1:
-        # Caps + negative framing in same sentence
-        negative_words = ['crime', 'problem', 'issue', 'trouble', 'bad',
-                          'terrible', 'awful', 'horrible', 'wrong', 'fail']
-        if any(nw in lower for nw in negative_words):
-            return True, 0.78, f'Caps emphasis ({", ".join(caps_words)}) with negative framing'
+    # ALL-CAPS + negative group framing
+    caps_words = [w for w in re.findall(r'\b[A-Z]{3,}\b', text)
+                  if w not in ['URL', 'USER']]
+    if caps_words:
+        group_negative = ['crime', 'criminal', 'problem', 'issue', 'trouble',
+                          'dangerous', 'terrible', 'awful', 'horrible']
+        if any(nw in lower for nw in group_negative):
+            return True, "hateful", 0.78, \
+                f'Caps emphasis ({", ".join(caps_words)}) with negative group framing'
 
-    # Ellipsis followed by contradiction
+    # Ellipsis + contradiction with group reference
     if '...' in text:
         parts = text.split('...')
         if len(parts) >= 2 and len(parts[1].strip()) > 0:
-            return True, 0.72, "Ellipsis contradiction structure detected"
+            group_words = ['they', 'them', 'those', 'people',
+                           'immigrants', 'refugees', 'outsiders']
+            if any(gw in lower for gw in group_words):
+                return True, "hateful", 0.72, "Ellipsis contradiction with group reference"
 
-    return False, 0.0, "No sarcasm signals found"
+    # Check general sarcasm
+    for kw in GENERAL_SARCASM_KEYWORDS:
+        if kw in lower:
+            return True, "general", 0.90, f'Matched sarcasm phrase: "{kw}"'
+    for pattern in GENERAL_SARCASM_PATTERNS:
+        if re.search(pattern, lower):
+            return True, "general", 0.82, "Matched general sarcasm pattern"
+
+    # Backhanded compliment: positive + negative in same sentence
+    positive_w = ['brilliant', 'genius', 'impressive', 'amazing',
+                  'revolutionary', 'inspiring', 'unmatched', 'award']
+    negative_w = ['incompetence', 'failure', 'wrong', 'misplaced',
+                  'difficult', 'harder', 'missing', 'consistently']
+    if any(pw in lower for pw in positive_w) and any(nw in lower for nw in negative_w):
+        return True, "general", 0.75, \
+            "Backhanded compliment: positive + negative framing in same sentence"
+
+    return False, "none", 0.0, "No sarcasm signals found"
+
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def clean_text(text: str) -> str:
@@ -174,10 +203,8 @@ def detect_lang(text: str) -> str:
 
 def translate_hi_to_en(text: str, hi_tok, hi_mod) -> str:
     try:
-        inputs = hi_tok(
-            [text], return_tensors="pt",
-            padding=True, truncation=True, max_length=128
-        )
+        inputs = hi_tok([text], return_tensors="pt",
+                        padding=True, truncation=True, max_length=128)
         out = hi_mod.generate(**inputs)
         return hi_tok.decode(out[0], skip_special_tokens=True)
     except Exception:
@@ -190,15 +217,12 @@ def load_hate_model():
     config.id2label = {0: "No Hate", 1: "Hate Speech"}
     config.label2id = {"No Hate": 0, "Hate Speech": 1}
     model = AutoModelForSequenceClassification.from_pretrained(
-        MODEL_PATH, config=config
-    )
+        MODEL_PATH, config=config)
     model.config.id2label = {0: "No Hate", 1: "Hate Speech"}
     model.config.label2id = {"No Hate": 0, "Hate Speech": 1}
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-    clf = pipeline(
-        "text-classification", model=model,
-        tokenizer=tokenizer, device=-1, top_k=None
-    )
+    clf = pipeline("text-classification", model=model,
+                   tokenizer=tokenizer, device=-1, top_k=None)
     return clf, tokenizer
 
 @st.cache_resource(show_spinner=False)
@@ -231,7 +255,6 @@ def render_shap_barchart(clf, text: str):
 
     explainer   = shap.Explainer(predict_fn, shap.maskers.Text(r"\W+"))
     shap_values = explainer([text], max_evals=200)
-
     vals    = shap_values[0, :, 1].values
     words   = shap_values[0, :, 1].data
     top_n   = min(10, len(vals))
@@ -243,61 +266,53 @@ def render_shap_barchart(clf, text: str):
     fig, ax = plt.subplots(figsize=(9, max(3, top_n * 0.5)))
     fig.patch.set_facecolor("#1a1f35")
     ax.set_facecolor("#1a1f35")
-
     bars = ax.barh(top_words, top_vals, color=colors, edgecolor="none", height=0.6)
     for bar, val in zip(bars, top_vals):
-        x_pos = bar.get_width() + (0.002 if val >= 0 else -0.002)
         ax.text(
-            x_pos, bar.get_y() + bar.get_height() / 2,
+            bar.get_width() + (0.002 if val >= 0 else -0.002),
+            bar.get_y() + bar.get_height() / 2,
             f"{val:+.3f}", va="center",
             ha="left" if val >= 0 else "right",
             color="#e2e8f0", fontsize=9
         )
-
     ax.axvline(0, color="#4a5568", linewidth=1.2)
     ax.set_xlabel("SHAP Value", color="#a0aec0", fontsize=9)
-    ax.set_title("Top Words by Impact on Prediction", color="#e2e8f0", fontsize=11, pad=10)
+    ax.set_title("Top Words by Impact on Prediction", color="#e2e8f0",
+                 fontsize=11, pad=10)
     ax.tick_params(colors="#e2e8f0", labelsize=10)
     ax.spines[["top","right","bottom","left"]].set_visible(False)
-
     from matplotlib.patches import Patch
     ax.legend(
         handles=[
             Patch(color="#e53e3e", label="→ Increases Hate probability"),
             Patch(color="#4299e1", label="→ Decreases Hate probability"),
         ],
-        loc="lower right", framealpha=0.2,
-        labelcolor="#e2e8f0", fontsize=8
+        loc="lower right", framealpha=0.2, labelcolor="#e2e8f0", fontsize=8
     )
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
     plt.close(fig)
 
-# ── Confidence Pie Chart ──────────────────────────────────────────────────────
+# ── Confidence Pie ────────────────────────────────────────────────────────────
 def render_confidence_pie(hate_prob: float, safe_prob: float):
     fig, ax = plt.subplots(figsize=(3.5, 3.5))
     fig.patch.set_facecolor("#1a1f35")
     ax.set_facecolor("#1a1f35")
     wedges, _ = ax.pie(
-        [hate_prob, safe_prob],
-        colors=["#e53e3e", "#38a169"],
-        startangle=90,
-        wedgeprops={"edgecolor": "#1a1f35", "linewidth": 2}
+        [hate_prob, safe_prob], colors=["#e53e3e", "#38a169"],
+        startangle=90, wedgeprops={"edgecolor": "#1a1f35", "linewidth": 2}
     )
-    ax.legend(
-        wedges,
-        [f"Hate\n{hate_prob:.1%}", f"Safe\n{safe_prob:.1%}"],
-        loc="lower center", bbox_to_anchor=(0.5, -0.08),
-        ncol=2, labelcolor="#e2e8f0", framealpha=0, fontsize=9
-    )
+    ax.legend(wedges, [f"Hate\n{hate_prob:.1%}", f"Safe\n{safe_prob:.1%}"],
+              loc="lower center", bbox_to_anchor=(0.5, -0.08), ncol=2,
+              labelcolor="#e2e8f0", framealpha=0, fontsize=9)
     ax.set_title("Confidence", color="#e2e8f0", fontsize=10, pad=8)
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
     plt.close(fig)
 
 # ── UI ────────────────────────────────────────────────────────────────────────
-st.title("Context-Aware Hate Speech Detector")
-st.markdown("**Powered by DistilBERT + SHAP Explainability + Sarcasm Detection + Multilingual (EN + HI)**")
+st.title("🔍 Context-Aware Hate Speech Detector")
+st.markdown("**Powered by DistilBERT + SHAP + Sarcasm Detection + Multilingual (EN + HI)**")
 st.markdown("---")
 
 with st.spinner("Loading models... (first load ~30 sec)"):
@@ -306,22 +321,19 @@ with st.spinner("Loading models... (first load ~30 sec)"):
 
 col1, col2 = st.columns([2, 1])
 with col1:
-    user_input = st.text_area(
-        " Enter text (English or Hindi):",
-        height=150, placeholder="Type any text here..."
-    )
+    user_input = st.text_area("✍️ Enter text (English or Hindi):",
+                               height=150, placeholder="Type any text here...")
 with col2:
     st.markdown("### ⚙️ Options")
     show_shap  = st.checkbox("Show SHAP Bar Chart", value=True)
     show_pie   = st.checkbox("Show Confidence Pie Chart", value=True)
     show_trans = st.checkbox("Show Translation (Hindi)", value=True)
 
-analyze = st.button(" Analyze", type="primary", use_container_width=True)
+analyze = st.button("🔍 Analyze", type="primary", use_container_width=True)
 
 # ── Analysis ──────────────────────────────────────────────────────────────────
 if analyze and user_input.strip():
     with st.spinner("Analyzing..."):
-
         lang            = detect_lang(user_input)
         translated      = None
         text_to_predict = user_input
@@ -332,7 +344,6 @@ if analyze and user_input.strip():
 
         cleaned = clean_text(text_to_predict)
 
-        # Positive phrase override
         is_obvious_positive = any(p in cleaned.lower() for p in POSITIVE_PHRASES)
 
         if is_obvious_positive:
@@ -340,14 +351,16 @@ if analyze and user_input.strip():
         else:
             label, hate_prob, safe_prob = get_probs(clf, cleaned)
 
-        # ✅ Rule-based sarcasm detection — reliable
-        is_sarcastic, sarc_conf, sarc_reason = rule_based_sarcasm(user_input)
+        # Two-type sarcasm detection
+        is_sarcastic, sarc_type, sarc_conf, sarc_reason = rule_based_sarcasm(user_input)
 
-        # Final context label
-        if is_sarcastic and label == "No Hate" and sarc_conf >= 0.72:
+        # Final context decision
+        if is_sarcastic and sarc_type == "hateful" and label == "No Hate" and sarc_conf >= 0.72:
             final_context = "indirect_hate"
-        elif is_sarcastic:
-            final_context = "sarcasm_low"
+        elif is_sarcastic and sarc_type == "general":
+            final_context = "general_sarcasm"
+        elif is_sarcastic and sarc_type == "hateful":
+            final_context = "hateful_sarcasm_low"
         else:
             final_context = "direct"
 
@@ -360,6 +373,10 @@ if analyze and user_input.strip():
             f"⚠️ POSSIBLE INDIRECT HATE SPEECH — Sarcasm detected ({sarc_conf:.0%} confidence)  \n"
             f"Base model predicted **No Hate**, but sarcastic framing suggests hidden hostility."
         )
+    elif final_context == "general_sarcasm":
+        st.info(
+            f"💡 SARCASM DETECTED — Mocking/ironic tone, but not hate speech ({sarc_conf:.0%} confidence)"
+        )
     else:
         st.success(f"✅ NO HATE SPEECH DETECTED — {safe_prob:.1%} confidence")
 
@@ -368,22 +385,24 @@ if analyze and user_input.strip():
     # ── Table + Pie ───────────────────────────────────────────────────────────
     left, right = st.columns([3, 1])
     with left:
-        st.markdown("####  Prediction Summary")
+        st.markdown("#### 📋 Prediction Summary")
 
         badge = (
             '<span class="badge-hate">Hate Speech</span>'
             if label == "Hate Speech"
             else '<span class="badge-safe">No Hate</span>'
         )
-        context_badge = (
-            '<span class="badge-sarcasm">⚠️ Sarcasm Detected</span>'
-            if is_sarcastic
-            else '<span class="badge-direct">✅ Direct</span>'
-        )
+        if final_context == "indirect_hate":
+            ctx_badge = '<span class="badge-sarcasm-hate">⚠️ Hateful Sarcasm</span>'
+        elif final_context == "general_sarcasm":
+            ctx_badge = '<span class="badge-sarcasm-general">💡 General Sarcasm</span>'
+        else:
+            ctx_badge = '<span class="badge-direct">✅ Direct</span>'
+
         lang_display  = {"en": "🇬🇧 English", "hi": "🇮🇳 Hindi"}.get(lang, lang.upper())
         trans_display = f"<em>{translated}</em>" if translated else "—"
         conf_val      = f"{hate_prob:.1%}" if label == "Hate Speech" else f"{safe_prob:.1%}"
-        sarc_display  = f"{sarc_conf:.0%}" if is_sarcastic else "—"
+        sarc_display  = f"{sarc_conf:.0%} ({sarc_type})" if is_sarcastic else "—"
 
         st.markdown(f"""
         <table class="summary-table">
@@ -395,7 +414,7 @@ if analyze and user_input.strip():
                 <tr><td>Safe Probability</td><td>{safe_prob:.1%}</td></tr>
                 <tr><td>Language</td><td>{lang_display}</td></tr>
                 <tr><td>Translation</td><td>{trans_display}</td></tr>
-                <tr><td>Context</td><td>{context_badge}</td></tr>
+                <tr><td>Context</td><td>{ctx_badge}</td></tr>
                 <tr><td>Sarcasm Confidence</td><td>{sarc_display}</td></tr>
             </tbody>
         </table>
@@ -405,22 +424,30 @@ if analyze and user_input.strip():
         if show_pie:
             render_confidence_pie(hate_prob, safe_prob)
 
-    # ── Context Awareness Section ─────────────────────────────────────────────
+    # ── Context Awareness ─────────────────────────────────────────────────────
     st.markdown("---")
-    st.markdown("####  Context Awareness")
+    st.markdown("#### 🎭 Context Awareness")
 
     if final_context == "indirect_hate":
         st.warning(
-            f"⚠️ **Sarcasm detected** ({sarc_conf:.0%} confidence)  \n"
+            f"⚠️ **Hateful Sarcasm detected** ({sarc_conf:.0%} confidence)  \n"
             f"**Reason:** {sarc_reason}  \n\n"
-            f"This text uses sarcastic or ironic language to express hostility "
-            f"while appearing neutral on the surface. The base model predicted **No Hate** "
-            f"because the literal words are not explicitly hateful — but the sarcastic "
-            f"framing indicates **indirect hate speech**."
+            f"This text uses sarcastic or ironic language to express hostility toward "
+            f"a group while appearing neutral on the surface. The base model predicted "
+            f"**No Hate** because the literal words are not explicitly hateful — but the "
+            f"sarcastic framing indicates **indirect hate speech**."
         )
-    elif final_context == "sarcasm_low":
+    elif final_context == "general_sarcasm":
         st.info(
-            f"💡 **Weak sarcasm signal detected** ({sarc_conf:.0%} confidence)  \n"
+            f"💡 **General Sarcasm detected** ({sarc_conf:.0%} confidence)  \n"
+            f"**Reason:** {sarc_reason}  \n\n"
+            f"This text uses sarcasm or irony to mock someone's competence or actions, "
+            f"but is **not directed at any protected group**. It is not classified as hate "
+            f"speech — sarcasm alone does not make content hateful."
+        )
+    elif final_context == "hateful_sarcasm_low":
+        st.info(
+            f"💡 **Weak sarcasm signal** ({sarc_conf:.0%} confidence)  \n"
             f"**Reason:** {sarc_reason}  \n\n"
             f"Some sarcasm indicators present but below threshold. "
             f"Base prediction **{label}** is likely correct."
