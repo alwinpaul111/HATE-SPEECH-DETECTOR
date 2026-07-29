@@ -311,7 +311,7 @@ def render_confidence_pie(hate_prob: float, safe_prob: float):
     plt.close(fig)
 
 # ── UI ────────────────────────────────────────────────────────────────────────
-st.title("🔍 Context-Aware Hate Speech Detector")
+st.title(" Context-Aware Hate Speech Detector")
 st.markdown("**Powered by DistilBERT + SHAP + Sarcasm Detection + Multilingual (EN + HI)**")
 st.markdown("---")
 
@@ -324,7 +324,7 @@ with col1:
     user_input = st.text_area("✍️ Enter text (English or Hindi):",
                                height=150, placeholder="Type any text here...")
 with col2:
-    st.markdown("### ⚙️ Options")
+    st.markdown("###  Options")
     show_shap  = st.checkbox("Show SHAP Bar Chart", value=True)
     show_pie   = st.checkbox("Show Confidence Pie Chart", value=True)
     show_trans = st.checkbox("Show Translation (Hindi)", value=True)
