@@ -101,6 +101,13 @@ POSITIVE_PHRASES = [
     "condemn this behavior", "this is unacceptable",
     "we must do better", "we should do better",
     "hate has no place", "love not hate",
+    #  Compliments and praise
+    "you are so", "you are very", "you are quite",
+    "so intelligent", "so smart", "so kind",
+    "so helpful", "so talented", "so creative",
+    "so brilliant", "so impressive", "so amazing",
+    "well done", "great job", "nice work",
+    "i admire", "i respect", "i appreciate",
 
     #  "I hate X" where X is a harmful concept, not a group
     "i hate terrorism", "i hate violence",
