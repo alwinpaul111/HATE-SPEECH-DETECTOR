@@ -14,7 +14,7 @@ from langdetect import detect, LangDetectException
 # ── Page Config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Hate Speech Detector",
-    page_icon="🔍",
+    page_icon=" ",
     layout="wide"
 )
 
@@ -339,7 +339,7 @@ def render_confidence_pie(hate_prob: float, safe_prob: float):
     plt.close(fig)
 
 # ── UI ────────────────────────────────────────────────────────────────────────
-st.title("🔍 Context-Aware Hate Speech Detector")
+st.title(" Context-Aware Hate Speech Detector")
 st.markdown("**Powered by DistilBERT + SHAP + Sarcasm Detection + Multilingual (EN + HI)**")
 st.markdown("---")
 
@@ -349,7 +349,7 @@ with st.spinner("Loading models... (first load ~30 sec)"):
 
 col1, col2 = st.columns([2, 1])
 with col1:
-    user_input = st.text_area("✍️ Enter text (English or Hindi):",
+    user_input = st.text_area(" Enter text (English or Hindi):",
                                height=150, placeholder="Type any text here...")
 with col2:
     st.markdown("### ⚙️ Options")
@@ -357,7 +357,7 @@ with col2:
     show_pie   = st.checkbox("Show Confidence Pie Chart", value=True)
     show_trans = st.checkbox("Show Translation (Hindi)", value=True)
 
-analyze = st.button("🔍 Analyze", type="primary", use_container_width=True)
+analyze = st.button(" Analyze", type="primary", use_container_width=True)
 
 # ── Analysis ──────────────────────────────────────────────────────────────────
 if analyze and user_input.strip():
