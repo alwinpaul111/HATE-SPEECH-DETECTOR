@@ -71,6 +71,7 @@ st.markdown("""
 MODEL_PATH = "alwinn/hate-speech-distilbert"
 
 POSITIVE_PHRASES = [
+     #  positive phrases
     "lovely person", "wonderful person", "great person",
     "amazing person", "beautiful day", "love you",
     "you are great", "you are kind", "well done",
@@ -81,7 +82,34 @@ POSITIVE_PHRASES = [
     "excellent work", "proud of you",
     "you are the best", "appreciate you", "thank you", "grateful",
     "good person", "nice person", "is a good", "is a nice",
-    "they are good", "they are nice", "is a great", "is a wonderful"
+    "they are good", "they are nice", "is a great", "is a wonderful",
+
+    #  Anti-hate statements (condemning violence/hate, not promoting it)
+    "violence against any group", "violence is never acceptable",
+    "violence against any", "never acceptable",
+    "is never acceptable", "is not acceptable",
+    "should never be allowed to discriminate",
+    "discrimination is wrong", "racism is wrong",
+    "hate is wrong", "hatred is wrong",
+    "every person deserves", "everyone deserves",
+    "deserves dignity", "deserves respect",
+    "dignity and respect", "equal rights",
+    "regardless of race", "regardless of religion",
+    "regardless of their", "regardless of background",
+    "no place for hate", "no place for racism",
+    "stand against hate", "fight against hate",
+    "condemn this behavior", "this is unacceptable",
+    "we must do better", "we should do better",
+    "hate has no place", "love not hate",
+
+    #  "I hate X" where X is a harmful concept, not a group
+    "i hate terrorism", "i hate violence",
+    "i hate injustice", "i hate racism",
+    "i hate discrimination", "i hate corruption",
+    "i hate poverty", "i hate war",
+    "hate terrorists", "hate terrorism",
+    "hate criminals", "hate crime",
+    "hate bullying", "hate abuse",
 ]
 
 # ── Sarcasm Patterns ──────────────────────────────────────────────────────────
