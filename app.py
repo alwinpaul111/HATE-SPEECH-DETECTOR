@@ -78,7 +78,7 @@ POSITIVE_PHRASES = [
     "you are lovely", "such a good", "such a great",
     "you are such a nice", "you are such a good",
     "i love this", "i love how", "i love our",
-    "fantastic", "excellent work", "proud of you",
+    "excellent work", "proud of you",
     "you are the best", "appreciate you", "thank you", "grateful",
     "good person", "nice person", "is a good", "is a nice",
     "they are good", "they are nice", "is a great", "is a wonderful"
@@ -118,6 +118,7 @@ GENERAL_SARCASM_KEYWORDS = [
     "you managed to make", "simplest task difficult",
     "confidence is inspiring", "misplaced confidence",
     "you're a genius", "truly impressive",
+    "award for being",
 ]
 GENERAL_SARCASM_PATTERNS = [
     r'what a (brilliant|great|wonderful|fantastic|amazing|genius).*(if|but|though|however|was)',
@@ -129,7 +130,6 @@ GENERAL_SARCASM_PATTERNS = [
     r'your\s+(confidence|talent|ability|skill).*(misplaced|unmatched|inspiring)',
     r'you\s+managed\s+to\s+make.*(difficult|hard|worse|fail)',
     r'you\s+really\s+thought\s+that\s+was',
-    r'award for being',
 ]
 
 
@@ -140,7 +140,7 @@ def rule_based_sarcasm(text: str) -> tuple[bool, str, float, str]:
     """
     lower = text.lower()
 
-    # Check hateful sarcasm first
+    # ── Check hateful sarcasm first ───────────────────────────────────────────
     for kw in HATEFUL_SARCASM_KEYWORDS:
         if kw in lower:
             return True, "hateful", 0.92, f'Matched hateful sarcasm phrase: "{kw}"'
@@ -167,7 +167,7 @@ def rule_based_sarcasm(text: str) -> tuple[bool, str, float, str]:
             if any(gw in lower for gw in group_words):
                 return True, "hateful", 0.72, "Ellipsis contradiction with group reference"
 
-    # Check general sarcasm
+    # ── Check general sarcasm ─────────────────────────────────────────────────
     for kw in GENERAL_SARCASM_KEYWORDS:
         if kw in lower:
             return True, "general", 0.90, f'Matched sarcasm phrase: "{kw}"'
@@ -177,7 +177,7 @@ def rule_based_sarcasm(text: str) -> tuple[bool, str, float, str]:
 
     # Backhanded compliment: positive + negative in same sentence
     positive_w = ['brilliant', 'genius', 'impressive', 'amazing',
-                  'revolutionary', 'inspiring', 'unmatched', 'award']
+                  'revolutionary', 'inspiring', 'unmatched']
     negative_w = ['incompetence', 'failure', 'wrong', 'misplaced',
                   'difficult', 'harder', 'missing', 'consistently']
     if any(pw in lower for pw in positive_w) and any(nw in lower for nw in negative_w):
@@ -311,7 +311,7 @@ def render_confidence_pie(hate_prob: float, safe_prob: float):
     plt.close(fig)
 
 # ── UI ────────────────────────────────────────────────────────────────────────
-st.title(" Context-Aware Hate Speech Detector")
+st.title("🔍 Context-Aware Hate Speech Detector")
 st.markdown("**Powered by DistilBERT + SHAP + Sarcasm Detection + Multilingual (EN + HI)**")
 st.markdown("---")
 
@@ -324,7 +324,7 @@ with col1:
     user_input = st.text_area("✍️ Enter text (English or Hindi):",
                                height=150, placeholder="Type any text here...")
 with col2:
-    st.markdown("###  Options")
+    st.markdown("### ⚙️ Options")
     show_shap  = st.checkbox("Show SHAP Bar Chart", value=True)
     show_pie   = st.checkbox("Show Confidence Pie Chart", value=True)
     show_trans = st.checkbox("Show Translation (Hindi)", value=True)
@@ -334,6 +334,8 @@ analyze = st.button("🔍 Analyze", type="primary", use_container_width=True)
 # ── Analysis ──────────────────────────────────────────────────────────────────
 if analyze and user_input.strip():
     with st.spinner("Analyzing..."):
+
+        # Language detection + translation
         lang            = detect_lang(user_input)
         translated      = None
         text_to_predict = user_input
@@ -344,15 +346,24 @@ if analyze and user_input.strip():
 
         cleaned = clean_text(text_to_predict)
 
+        # ✅ Run sarcasm detection FIRST before model
+        is_sarcastic, sarc_type, sarc_conf, sarc_reason = rule_based_sarcasm(user_input)
+
+        # ✅ Decision logic — order matters
         is_obvious_positive = any(p in cleaned.lower() for p in POSITIVE_PHRASES)
 
         if is_obvious_positive:
+            # Known positive phrases → always No Hate
             label, hate_prob, safe_prob = "No Hate", 0.03, 0.97
-        else:
-            label, hate_prob, safe_prob = get_probs(clf, cleaned)
 
-        # Two-type sarcasm detection
-        is_sarcastic, sarc_type, sarc_conf, sarc_reason = rule_based_sarcasm(user_input)
+        elif is_sarcastic and sarc_type == "general":
+            # General sarcasm (mocking incompetence) → always No Hate
+            # Don't call the model — these are NEVER hate speech by definition
+            label, hate_prob, safe_prob = "No Hate", 0.05, 0.95
+
+        else:
+            # Run the model for everything else
+            label, hate_prob, safe_prob = get_probs(clf, cleaned)
 
         # Final context decision
         if is_sarcastic and sarc_type == "hateful" and label == "No Hate" and sarc_conf >= 0.72:
@@ -442,8 +453,8 @@ if analyze and user_input.strip():
             f"💡 **General Sarcasm detected** ({sarc_conf:.0%} confidence)  \n"
             f"**Reason:** {sarc_reason}  \n\n"
             f"This text uses sarcasm or irony to mock someone's competence or actions, "
-            f"but is **not directed at any protected group**. It is not classified as hate "
-            f"speech — sarcasm alone does not make content hateful."
+            f"but is **not directed at any protected group**. It is not classified as "
+            f"hate speech — sarcasm alone does not make content hateful."
         )
     elif final_context == "hateful_sarcasm_low":
         st.info(
@@ -459,7 +470,7 @@ if analyze and user_input.strip():
         )
 
     # ── SHAP ──────────────────────────────────────────────────────────────────
-    if show_shap and not is_obvious_positive:
+    if show_shap and not is_obvious_positive and final_context != "general_sarcasm":
         st.markdown("---")
         st.markdown("#### 🔍 SHAP Feature Importance — Top Words")
         st.caption(
@@ -471,8 +482,8 @@ if analyze and user_input.strip():
                 render_shap_barchart(clf, cleaned)
             except Exception as e:
                 st.warning(f"SHAP analysis failed: {e}")
-    elif show_shap and is_obvious_positive:
-        st.info("💡 SHAP skipped — text matched a known positive phrase.")
+    elif show_shap and (is_obvious_positive or final_context == "general_sarcasm"):
+        st.info("💡 SHAP skipped — prediction made by context rules, not the model.")
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("---")
