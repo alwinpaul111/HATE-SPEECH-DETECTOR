@@ -210,7 +210,7 @@ def rule_based_sarcasm(text: str) -> tuple[bool, str, float, str]:
         if re.search(pattern, lower):
             return True, "general", 0.82, "Matched general sarcasm pattern"
 
-    # Backhanded compliment: positive + negative in same sentence
+    # Backhanded compliment:- positive + negative in same sentence
     positive_w = ['brilliant', 'genius', 'impressive', 'amazing',
                   'revolutionary', 'inspiring', 'unmatched']
     negative_w = ['incompetence', 'failure', 'wrong', 'misplaced',
