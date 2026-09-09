@@ -170,7 +170,7 @@ Open `http://localhost:8501` in your browser
 No Hate      : 1,010 samples (50%)
 Hate Speech  : 1,015 samples (50%)
 ```
-Perfectly balanced — no class imbalance issues.
+Perfectly balanced — no class imbalance issues
 
 ---
 
